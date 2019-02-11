@@ -1,0 +1,14 @@
+make config T=x86_64-native-linuxapp-gcc
+make install T=x86_64-native-linuxapp-gcc
+apt-get install libnuma-dev
+make
+
+modprobe uio
+insmod build/kmod/igb_uio.ko
+mkdir -p /mnt/huge
+mount -t hugetlbfs nodev /mnt/huge
+echo 64 > /sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages
+export RTE_SDK=/home/fahad/Downloads/dpdk-18.08
+export RTE_TARGET=x86_64-native-linuxapp-gcc
+make
+
